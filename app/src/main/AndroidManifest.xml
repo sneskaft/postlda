@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".settings"
             android:parentActivityName=".MainActivity"
-            android:label="Settings">
+            android:label="Setup">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.typelias.postlda.MainActivity">
