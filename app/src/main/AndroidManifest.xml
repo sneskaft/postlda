@@ -19,6 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".settings"
+            android:parentActivityName=".MainActivity"
+            android:label="Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.typelias.postlda.MainActivity">
+
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>
