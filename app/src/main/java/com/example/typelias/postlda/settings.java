@@ -1,5 +1,6 @@
 package com.example.typelias.postlda;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -48,13 +49,21 @@ public class settings extends AppCompatActivity {
 
                 int intID = Integer.parseInt(id);
 
+
+
                 SharedPreferences.Editor editor = data.edit();
+                editor.clear();
                 editor.putString("name",name);
                 editor.putString("adress",adress);
                 editor.putString("zip",zipcode);
                 editor.putString("mailname",mailName);
                 editor.putInt("id",intID);
                 editor.commit();
+
+                Intent toy = new Intent(settings.this, MainActivity.class);
+
+
+                startActivity(toy);
             }
         });
     }

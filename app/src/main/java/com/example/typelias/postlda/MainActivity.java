@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-
-
+            mailStatus.setText("Mail?????");
         }
 
     }
