@@ -1,13 +1,20 @@
 package com.example.typelias.postlda;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.ubidots.ApiClient;
+import com.ubidots.Variable;
+import com.ubidots.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,12 +65,37 @@ public class MainActivity extends AppCompatActivity {
         zipcode.setText(loadZip);
         String loadMailName = data.getString("mailname","");
         mailName.setText(loadMailName);
-        getSQLData();
+        getData();
 
 
     }
 
-    public void getSQLData()
+    public class ApiUbidots extends AsyncTask<Integer, Void, Value[]> {
+        private final String API_KEY = "A1E-fc2e596a3fa569e79fb2c005b2a187b46157";
+        private final String VARIABLE_ID = "5acb514ac03f97087bd48306";
+
+        @Override
+        protected Value[] doInBackground(Integer... params) {
+            ApiClient apiClient = new ApiClient(API_KEY);
+            Variable batteryLevel = apiClient.getVariable(VARIABLE_ID);
+            Value[] variableValues = batteryLevel.getValues();
+
+            return variableValues;
+        }
+
+        @Override
+        protected void onPostExecute(Value[] variableValues) {
+
+            Double shit = variableValues[0].getValue();
+
+            mailStatus.setText(String.valueOf(shit));
+
+        }
+    }
+
+
+
+    public void getData()
     {
         mailStatus = (TextView)findViewById(R.id.mailStatus);
         data = getSharedPreferences(filename,0);
