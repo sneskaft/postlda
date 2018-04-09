@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
         mailStatus = (TextView)findViewById(R.id.mailStatus);
         data = getSharedPreferences(filename,0);
         int id = data.getInt("id",-2);
-        if(id == -2)
+        if(id <=0)
         {
-            mailStatus.setText("Error. \nKlicka på setup\neller så är det fel id");
+            mailStatus.setText("Error. \nKlicka på setup");
         }
         else
         {

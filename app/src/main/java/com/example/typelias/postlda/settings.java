@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class settings extends AppCompatActivity {
 
@@ -47,23 +48,44 @@ public class settings extends AppCompatActivity {
                 id = mail_id.getText().toString();
                 mailName = mail_name.getText().toString();
 
-                int intID = Integer.parseInt(id);
+                if (id.matches("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Inget id angivet", Toast.LENGTH_LONG);
+                    toast.show();
+                } else {
+
+                    if(isInt(id)==false)
+                    {
+                        Toast toast = Toast.makeText(getApplicationContext(), "ID måste vara en siffra", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    else {
 
 
+                        int intID = Integer.parseInt(id);
 
-                SharedPreferences.Editor editor = data.edit();
-                editor.clear();
-                editor.putString("name",name);
-                editor.putString("adress",adress);
-                editor.putString("zip",zipcode);
-                editor.putString("mailname",mailName);
-                editor.putInt("id",intID);
-                editor.commit();
-
-                Intent toy = new Intent(settings.this, MainActivity.class);
+                        if (intID <= 0) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Felaktikt ID", Toast.LENGTH_LONG);
+                            toast.show();
+                        } else {
 
 
-                startActivity(toy);
+                            SharedPreferences.Editor editor = data.edit();
+                            editor.clear();
+                            editor.putString("name", name);
+                            editor.putString("adress", adress);
+                            editor.putString("zip", zipcode);
+                            editor.putString("mailname", mailName);
+                            editor.putInt("id", intID);
+                            editor.commit();
+
+                            Intent toy = new Intent(settings.this, MainActivity.class);
+
+
+                            startActivity(toy);
+
+                        }
+                    }
+                }
             }
         });
     }
@@ -76,6 +98,19 @@ public class settings extends AppCompatActivity {
         save();
 
         data = getSharedPreferences(filename,0);
+    }
+
+    public boolean isInt(String input)
+    {
+        try
+        {
+            Integer.parseInt(input);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
 
