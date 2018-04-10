@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "107681530152",
+    "firebase_url": "https://mailalert-cc5b2.firebaseio.com",
+    "project_id": "mailalert-cc5b2",
+    "storage_bucket": "mailalert-cc5b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107681530152:android:3b0afadfe211f68b",
+        "android_client_info": {
+          "package_name": "com.example.typelias.postlda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107681530152-tupud5rp3mm6te8c2vodlqsh5efq6t6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.typelias.postlda",
+            "certificate_hash": "8e495e62ef967c0c37dba6ad31b9b441402086dc"
+          }
+        },
+        {
+          "client_id": "107681530152-tiqcsjojh3k7sjtqu2a02p0fk2ah0ra1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYoD2HiAY8Cwe-Uk2dlgcF-PpEz3nB1mc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107681530152-tiqcsjojh3k7sjtqu2a02p0fk2ah0ra1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
