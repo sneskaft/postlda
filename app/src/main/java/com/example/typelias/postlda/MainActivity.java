@@ -95,20 +95,25 @@ public class MainActivity extends AppCompatActivity {
         myRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String temp = dataSnapshot.getValue(String.class);
-                int status = Integer.parseInt(temp);
 
-                if(status==1)
+                if (tryData(dataSnapshot)) {
+                    String temp = dataSnapshot.getValue(String.class);
+                    boolean test = isInt(temp);
+
+                    if (test == true) {
+                        int status = Integer.parseInt(temp);
+
+                        if (status == 1) {
+                            mailStatus.setText("Det finns post");
+                        } else if (status == 0) {
+                            mailStatus.setText("Ingen post");
+                        } else {
+                            mailStatus.setText("error");
+                        }
+                    }
+                }else
                 {
-                    mailStatus.setText("Det finns post");
-                }
-                else if(status==0)
-                {
-                    mailStatus.setText("Ingen post");
-                }
-                else
-                {
-                    mailStatus.setText("error");
+                    mailStatus.setText("error in database");
                 }
             }
 
@@ -120,9 +125,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public boolean isInt(String input)
+    {
+        try
+        {
+            Integer.parseInt(input);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
-
-
-
+    public boolean tryData(DataSnapshot dataSnapshot)
+    {
+        try
+        {
+            dataSnapshot.getValue(String.class);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
 }
