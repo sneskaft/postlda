@@ -146,4 +146,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="428dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,11 @@
 package com.example.typelias.postlda;
 
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +14,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     public Button but1;
+    public Button but2;
 
 
     public TextView owner;
@@ -42,10 +49,17 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef;
 
 
+    NotificationCompat.Builder notification;
+    public static final int uniqID = 4729375;
+    public static final String Chanel_ID = "my_ch_id";
+    NotificationChannel mChanel;
+
+
 
 
     public void init() {
         but1 = (Button) findViewById(R.id.next);
+        but2 = (Button) findViewById(R.id.send);
         but1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 startActivity(toy);
+            }
+        });
+
+        but2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buildRun();
             }
         });
 
@@ -87,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
         int temp = data.getInt("id",0);
         String id = String.valueOf(temp);
 
+        //Notification
+        @TargetApi(mChanel = new NotificationChannel(Chanel_ID,"myChanel",NotificationManager.IMPORTANCE_LOW);)
+        notification = new NotificationCompat.Builder(this,Chanel_ID);
+        notification.setAutoCancel(true);
+
+
         //Database
 
         database = FirebaseDatabase.getInstance();
@@ -105,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (status == 1) {
                             mailStatus.setText("Det finns post");
+                            buildRun();
                         } else if (status == 0) {
                             mailStatus.setText("Ingen post");
                         } else {
@@ -149,6 +177,26 @@ public class MainActivity extends AppCompatActivity {
         {
             return false;
         }
+    }
+
+    public void buildRun()
+    {
+        //Build
+        notification.setSmallIcon(R.drawable.ic_launcher_foreground);
+        notification.setTicker("Post");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle("MailAlert");
+        notification.setContentText("Du har fått post");
+        notification.setChannelId(Chanel_ID);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pendingIntent);
+
+        //Run
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(uniqID,notification.build());
+
     }
 
 }
