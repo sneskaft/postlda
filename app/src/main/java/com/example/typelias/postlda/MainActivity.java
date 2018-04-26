@@ -1,28 +1,17 @@
 package com.example.typelias.postlda;
 
 
-import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,17 +34,10 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences data;
     static public String filename = "info";
 
+    public String status1;
+
     FirebaseDatabase database;
     DatabaseReference myRef;
-
-
-    NotificationCompat.Builder notification;
-    public static final int uniqID = 4729375;
-    public static final String Chanel_ID = "my_ch_id";
-    NotificationChannel mChanel;
-
-
-
 
     public void init() {
         but1 = (Button) findViewById(R.id.next);
@@ -73,7 +55,42 @@ public class MainActivity extends AppCompatActivity {
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buildRun();
+                int temp = data.getInt("id",0);
+                String id = String.valueOf(temp);
+                myRef.child(id).child("online").setValue("check");
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        int temp = data.getInt("id",0);
+                        String id = String.valueOf(temp);
+                        myRef.child(id).child("online").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                status1 = dataSnapshot.getValue(String.class);
+
+                                //Toast.makeText(getApplicationContext(),"In funcktion",Toast.LENGTH_SHORT).show();
+
+
+                                if(status1.equals("1"))
+                                {
+                                    Toast.makeText(getApplicationContext(),"Brevlådan är online",Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(),"Brevlådan är offline",Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }, 10000);
+
             }
         });
 
@@ -108,18 +125,13 @@ public class MainActivity extends AppCompatActivity {
         int temp = data.getInt("id",0);
         String id = String.valueOf(temp);
 
-        //Notification
-        @TargetApi(mChanel = new NotificationChannel(Chanel_ID,"myChanel",NotificationManager.IMPORTANCE_LOW);)
-        notification = new NotificationCompat.Builder(this,Chanel_ID);
-        notification.setAutoCancel(true);
-
 
         //Database
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-        myRef.child(id).addValueEventListener(new ValueEventListener() {
+        myRef.child(id).child("status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -132,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
                         if (status == 1) {
                             mailStatus.setText("Det finns post");
-                            buildRun();
                         } else if (status == 0) {
                             mailStatus.setText("Ingen post");
                         } else {
@@ -177,26 +188,6 @@ public class MainActivity extends AppCompatActivity {
         {
             return false;
         }
-    }
-
-    public void buildRun()
-    {
-        //Build
-        notification.setSmallIcon(R.drawable.ic_launcher_foreground);
-        notification.setTicker("Post");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("MailAlert");
-        notification.setContentText("Du har fått post");
-        notification.setChannelId(Chanel_ID);
-
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-        //Run
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(uniqID,notification.build());
-
     }
 
 }
