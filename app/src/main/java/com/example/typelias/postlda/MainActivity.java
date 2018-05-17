@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 status1 = dataSnapshot.getValue(String.class);
 
-                                //Toast.makeText(getApplicationContext(),"In funcktion",Toast.LENGTH_SHORT).show();
+
 
 
                                 if(status1.equals("1"))
